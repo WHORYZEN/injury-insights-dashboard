@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
@@ -353,6 +354,208 @@ function getPayloadConfigFromPayload(
     : config[key as keyof typeof config]
 }
 
+// Add the specific chart component implementations
+// BarChart component
+const BarChart = ({ 
+  data, 
+  index, 
+  categories, 
+  colors = ["#2563eb"], 
+  valueFormatter,
+  ...props 
+}: {
+  data: any[]
+  index: string
+  categories: string[]
+  colors?: string[]
+  valueFormatter?: (value: number) => string
+} & Omit<React.ComponentProps<typeof RechartsPrimitive.BarChart>, "data">) => {
+  return (
+    <ChartContainer
+      config={{}}
+      className="w-full h-full"
+      {...props}
+    >
+      <RechartsPrimitive.BarChart data={data} barGap={4}>
+        <RechartsPrimitive.XAxis
+          dataKey={index}
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <RechartsPrimitive.YAxis
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          tickFormatter={(value) => valueFormatter ? valueFormatter(value) : `${value}`}
+        />
+        <RechartsPrimitive.Tooltip
+          content={({ active, payload }) => {
+            if (!active || !payload) return null
+            return (
+              <div className="rounded-lg border bg-background p-2 shadow-sm">
+                <div className="grid gap-1">
+                  {payload.map((item, index) => (
+                    <div key={`item-${index}`} className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-sm font-medium">
+                        {item.name}: {valueFormatter ? valueFormatter(Number(item.value)) : item.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          }}
+        />
+        {categories.map((category, index) => (
+          <RechartsPrimitive.Bar
+            key={category}
+            dataKey={category}
+            fill={colors[index % colors.length]}
+            radius={[4, 4, 0, 0]}
+          />
+        ))}
+      </RechartsPrimitive.BarChart>
+    </ChartContainer>
+  )
+}
+
+// LineChart component
+const LineChart = ({ 
+  data, 
+  index, 
+  categories, 
+  colors = ["#2563eb"], 
+  valueFormatter,
+  ...props 
+}: {
+  data: any[]
+  index: string
+  categories: string[]
+  colors?: string[]
+  valueFormatter?: (value: number) => string
+} & Omit<React.ComponentProps<typeof RechartsPrimitive.LineChart>, "data">) => {
+  return (
+    <ChartContainer
+      config={{}}
+      className="w-full h-full"
+      {...props}
+    >
+      <RechartsPrimitive.LineChart data={data}>
+        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" className="opacity-30" />
+        <RechartsPrimitive.XAxis
+          dataKey={index}
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <RechartsPrimitive.YAxis
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          tickFormatter={(value) => valueFormatter ? valueFormatter(value) : `${value}`}
+        />
+        <RechartsPrimitive.Tooltip
+          content={({ active, payload }) => {
+            if (!active || !payload) return null
+            return (
+              <div className="rounded-lg border bg-background p-2 shadow-sm">
+                <div className="grid gap-1">
+                  {payload.map((item, index) => (
+                    <div key={`item-${index}`} className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-sm font-medium">
+                        {item.name}: {valueFormatter ? valueFormatter(Number(item.value)) : item.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          }}
+        />
+        {categories.map((category, index) => (
+          <RechartsPrimitive.Line
+            key={category}
+            type="monotone"
+            dataKey={category}
+            stroke={colors[index % colors.length]}
+            strokeWidth={2}
+            dot={{ r: 4 }}
+            activeDot={{ r: 6 }}
+          />
+        ))}
+      </RechartsPrimitive.LineChart>
+    </ChartContainer>
+  )
+}
+
+// PieChart component
+const PieChart = ({ 
+  data, 
+  index, 
+  categories, 
+  colors = ["#2563eb", "#8b5cf6", "#06b6d4", "#10b981", "#eab308"], 
+  valueFormatter,
+  ...props 
+}: {
+  data: any[]
+  index: string
+  categories: string[]
+  colors?: string[]
+  valueFormatter?: (value: number) => string
+} & Omit<React.ComponentProps<typeof RechartsPrimitive.PieChart>, "data">) => {
+  return (
+    <ChartContainer
+      config={{}}
+      className="w-full h-full"
+      {...props}
+    >
+      <RechartsPrimitive.PieChart>
+        <RechartsPrimitive.Tooltip
+          content={({ active, payload }) => {
+            if (!active || !payload?.length) return null
+            const data = payload[0]
+            return (
+              <div className="rounded-lg border bg-background p-2 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full" style={{ backgroundColor: data.color }} />
+                  <span className="text-sm font-medium">
+                    {data.name}: {valueFormatter ? valueFormatter(Number(data.value)) : data.value}
+                  </span>
+                </div>
+              </div>
+            )
+          }}
+        />
+        <RechartsPrimitive.Pie
+          data={data}
+          dataKey={categories[0]}
+          nameKey={index}
+          cx="50%"
+          cy="50%"
+          outerRadius="90%"
+          innerRadius="40%"
+          paddingAngle={2}
+        >
+          {data.map((_, index) => (
+            <RechartsPrimitive.Cell 
+              key={`cell-${index}`} 
+              fill={colors[index % colors.length]} 
+            />
+          ))}
+        </RechartsPrimitive.Pie>
+        <RechartsPrimitive.Legend layout="horizontal" verticalAlign="bottom" align="center" />
+      </RechartsPrimitive.PieChart>
+    </ChartContainer>
+  )
+}
+
 export {
   ChartContainer,
   ChartTooltip,
@@ -360,4 +563,7 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  BarChart,
+  LineChart,
+  PieChart,
 }

@@ -1,160 +1,145 @@
 
 import React from 'react';
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { recentTasks, taskStats } from "@/data/tasks";
-import StatCard from "@/components/dashboard/StatCard";
-import { 
-  CheckSquare, 
-  Clock, 
-  AlertTriangle, 
-  ListChecks,
-  Calendar
-} from "lucide-react";
+import { tasks } from "@/data/tasks";
+import { Button } from "@/components/ui/button";
 import { 
   Card, 
   CardContent, 
+  CardDescription, 
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { CheckCircle2, Plus, AlertCircle } from "lucide-react";
+import TaskList from "@/components/dashboard/TaskList";
 
-// Expand task list for the page
-const allTasks = [
-  ...recentTasks,
-  {
-    id: "t5",
-    title: "Call insurance adjuster about Williams case",
-    dueDate: "Apr 19, 2025",
-    completed: false,
-    caseName: "PI-2025-036",
-    caseId: "3",
-    estimatedTime: 30,
-    assignee: {
-      name: "Jordan Parker",
-    },
-  },
-  {
-    id: "t6",
-    title: "Schedule follow-up with Dr. Martinez",
-    dueDate: "Apr 21, 2025",
-    completed: false,
-    caseName: "PI-2025-042",
-    caseId: "1",
-    estimatedTime: 15,
-    assignee: {
-      name: "Alex Turner",
-    },
-  },
-];
+// Define the priority and status badges for tasks
+const getPriorityBadge = (priority: string) => {
+  switch (priority.toLowerCase()) {
+    case 'high':
+      return <Badge variant="accent">High</Badge>;
+    case 'medium':
+      return <Badge variant="secondary">Medium</Badge>;
+    case 'low':
+      return <Badge variant="default">Low</Badge>;
+    default:
+      return <Badge variant="default">Low</Badge>;
+  }
+};
+
+const getStatusBadge = (status: string) => {
+  switch (status.toLowerCase()) {
+    case 'completed':
+      return <Badge variant="primary"><CheckCircle2 className="mr-1 h-3 w-3" /> Completed</Badge>;
+    case 'in progress':
+      return <Badge variant="secondary">In Progress</Badge>;
+    case 'pending':
+      return <Badge variant="default">Pending</Badge>;
+    case 'overdue':
+      return <Badge className="bg-destructive text-destructive-foreground">Overdue</Badge>;
+    default:
+      return <Badge variant="default">Pending</Badge>;
+  }
+};
+
+// Calculate task metrics
+const calculateTaskStats = () => {
+  const completed = tasks.filter(task => task.status.toLowerCase() === 'completed').length;
+  const inProgress = tasks.filter(task => task.status.toLowerCase() === 'in progress').length;
+  const pending = tasks.filter(task => task.status.toLowerCase() === 'pending').length;
+  const overdue = tasks.filter(task => task.status.toLowerCase() === 'overdue').length;
+  const total = tasks.length;
+  
+  return { completed, inProgress, pending, overdue, total };
+};
 
 const Tasks = () => {
+  const taskStats = calculateTaskStats();
+  
+  const today = new Date();
+  const todayTasks = tasks.filter(task => {
+    const dueDate = new Date(task.dueDate);
+    return dueDate.toDateString() === today.toDateString();
+  });
+
+  const priorityTasks = tasks.filter(task => 
+    task.priority.toLowerCase() === 'high' && task.status.toLowerCase() !== 'completed'
+  );
+  
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Task Manager</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Task Management</h1>
             <p className="text-muted-foreground">
-              Track and manage all tasks related to your cases.
+              Manage and track your case-related tasks.
             </p>
           </div>
-          <Button>Create New Task</Button>
+          <Button>
+            <Plus className="mr-1 h-4 w-4" />
+            New Task
+          </Button>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <StatCard 
-            title="Total Tasks" 
-            value={taskStats.total}
-            description="All assigned tasks"
-            icon={ListChecks}
-          />
-          <StatCard 
-            title="Due Today" 
-            value={taskStats.dueToday}
-            description="Tasks to complete today"
-            icon={Clock}
-            variant="accent"
-          />
-          <StatCard 
-            title="Overdue" 
-            value={taskStats.overdue}
-            description="Past due tasks"
-            icon={AlertTriangle}
-            variant="destructive"
-          />
-          <StatCard 
-            title="Completed" 
-            value={taskStats.completed}
-            description="Completed this month"
-            icon={CheckSquare}
-            variant="primary"
-          />
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{taskStats.total}</div>
+              <p className="text-xs text-muted-foreground">All assigned tasks</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-primary">{taskStats.completed}</div>
+              <p className="text-xs text-muted-foreground">Tasks finished successfully</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-secondary">{taskStats.inProgress}</div>
+              <p className="text-xs text-muted-foreground">Tasks currently in progress</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Overdue</CardTitle>
+              <AlertCircle className="h-4 w-4 text-destructive" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-destructive">{taskStats.overdue}</div>
+              <p className="text-xs text-muted-foreground">Tasks past due date</p>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-lg font-medium mb-4">Task List</h2>
-            <Card>
-              <CardContent className="p-0">
-                <div className="divide-y">
-                  {allTasks.map((task) => (
-                    <div 
-                      key={task.id} 
-                      className={`p-4 flex items-start gap-3 ${task.completed ? 'bg-secondary/50' : ''}`}
-                    >
-                      <Checkbox checked={task.completed} className="mt-1" />
-                      <div className="flex-1">
-                        <div className={`font-medium ${task.completed ? 'line-through text-muted-foreground' : ''}`}>
-                          {task.title}
-                        </div>
-                        
-                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Calendar className="h-3 w-3" />
-                            <span>{task.dueDate}</span>
-                          </div>
-                          
-                          {task.caseName && (
-                            <Badge variant="outline" className="text-xs font-normal">
-                              {task.caseName}
-                            </Badge>
-                          )}
-                          
-                          {task.estimatedTime && (
-                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                              <Clock className="h-3 w-3" />
-                              <span>{task.estimatedTime} mins</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-3">
-                        {task.assignee && (
-                          <div className="flex items-center gap-1">
-                            <Avatar className="h-6 w-6">
-                              <AvatarImage src={task.assignee.avatar} />
-                              <AvatarFallback className="text-xs">
-                                {task.assignee.name.split(" ").map(n => n[0]).join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span className="text-xs text-muted-foreground hidden md:inline">
-                              {task.assignee.name}
-                            </span>
-                          </div>
-                        )}
-                        <Button size="sm" variant="ghost">Edit</Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        <Tabs defaultValue="all">
+          <TabsList>
+            <TabsTrigger value="all">All Tasks</TabsTrigger>
+            <TabsTrigger value="today">Due Today</TabsTrigger>
+            <TabsTrigger value="priority">High Priority</TabsTrigger>
+          </TabsList>
+          <TabsContent value="all" className="mt-4">
+            <TaskList tasks={tasks} />
+          </TabsContent>
+          <TabsContent value="today" className="mt-4">
+            <TaskList tasks={todayTasks} />
+          </TabsContent>
+          <TabsContent value="priority" className="mt-4">
+            <TaskList tasks={priorityTasks} />
+          </TabsContent>
+        </Tabs>
       </div>
     </DashboardLayout>
   );
