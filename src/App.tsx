@@ -13,6 +13,7 @@ import TimeTracking from "./pages/TimeTracking";
 import Tasks from "./pages/Tasks";
 import Billing from "./pages/Billing";
 import Reports from "./pages/Reports";
+import LienCalculator from "./pages/LienCalculator";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Route path="/time" element={<TimeTracking />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/billing" element={<Billing />} />
+          <Route path="/lien-calculator" element={<LienCalculator />} />
           <Route path="/reports" element={<Reports />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
