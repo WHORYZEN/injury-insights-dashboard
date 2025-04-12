@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -40,6 +41,8 @@ const menuItems = [
 ];
 
 const DashboardSidebar = () => {
+  const location = useLocation();
+  
   return (
     <TooltipProvider>
       <Sidebar>
@@ -61,13 +64,13 @@ const DashboardSidebar = () => {
                 {menuItems.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <a 
-                        href={item.path} 
-                        className="flex items-center gap-2 py-2"
+                      <Link 
+                        to={item.path} 
+                        className={`flex items-center gap-2 py-2 ${location.pathname === item.path ? 'text-primary font-medium' : ''}`}
                       >
                         <item.icon className="h-5 w-5" />
                         <span>{item.name}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
