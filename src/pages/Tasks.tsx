@@ -19,28 +19,28 @@ import TaskList from "@/components/dashboard/TaskList";
 const getPriorityBadge = (priority: string) => {
   switch (priority.toLowerCase()) {
     case 'high':
-      return <Badge variant="accent">High</Badge>;
+      return <Badge className="bg-orange-500 text-white hover:bg-orange-600">High</Badge>;
     case 'medium':
       return <Badge variant="secondary">Medium</Badge>;
     case 'low':
-      return <Badge variant="default">Low</Badge>;
+      return <Badge variant="outline">Low</Badge>;
     default:
-      return <Badge variant="default">Low</Badge>;
+      return <Badge variant="outline">Low</Badge>;
   }
 };
 
 const getStatusBadge = (status: string) => {
   switch (status.toLowerCase()) {
     case 'completed':
-      return <Badge variant="primary"><CheckCircle2 className="mr-1 h-3 w-3" /> Completed</Badge>;
+      return <Badge className="bg-green-500 text-white hover:bg-green-600"><CheckCircle2 className="mr-1 h-3 w-3" /> Completed</Badge>;
     case 'in progress':
       return <Badge variant="secondary">In Progress</Badge>;
     case 'pending':
-      return <Badge variant="default">Pending</Badge>;
+      return <Badge variant="outline">Pending</Badge>;
     case 'overdue':
       return <Badge className="bg-destructive text-destructive-foreground">Overdue</Badge>;
     default:
-      return <Badge variant="default">Pending</Badge>;
+      return <Badge variant="outline">Pending</Badge>;
   }
 };
 
