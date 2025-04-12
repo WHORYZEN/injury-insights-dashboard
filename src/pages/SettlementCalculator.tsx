@@ -45,7 +45,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const LienCalculator = () => {
+const SettlementCalculator = () => {
   const [result, setResult] = useState<{
     originalLiens: number;
     reducedLiens: number;
@@ -91,9 +91,9 @@ const LienCalculator = () => {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Lien Reduction Calculator</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Settlement Reduction Calculator</h1>
           <p className="text-muted-foreground">
-            Calculate the potential benefit of lien reductions for your clients.
+            Calculate the potential benefit of settlement reductions for your clients.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ const LienCalculator = () => {
             <CardHeader>
               <CardTitle>Calculator</CardTitle>
               <CardDescription>
-                Enter settlement details to calculate potential lien reductions.
+                Enter settlement details to calculate potential reductions.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -127,7 +127,7 @@ const LienCalculator = () => {
                     name="totalLiens"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Total Liens Amount ($)</FormLabel>
+                        <FormLabel>Total Liens/Medical Expenses ($)</FormLabel>
                         <FormControl>
                           <Input type="number" {...field} />
                         </FormControl>
@@ -195,7 +195,7 @@ const LienCalculator = () => {
             <CardHeader>
               <CardTitle>Results</CardTitle>
               <CardDescription>
-                Lien reduction calculation results
+                Settlement reduction calculation results
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -203,11 +203,11 @@ const LienCalculator = () => {
                 <>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">Original Liens:</p>
+                      <p className="text-sm text-muted-foreground">Original Liens/Expenses:</p>
                       <p className="text-2xl font-semibold">${result.originalLiens.toLocaleString()}</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">Reduced Liens:</p>
+                      <p className="text-sm text-muted-foreground">Reduced Liens/Expenses:</p>
                       <p className="text-2xl font-semibold text-primary">${Math.round(result.reducedLiens).toLocaleString()}</p>
                     </div>
                   </div>
@@ -233,9 +233,9 @@ const LienCalculator = () => {
                       </DrawerTrigger>
                       <DrawerContent>
                         <DrawerHeader>
-                          <DrawerTitle>Lien Reduction Report</DrawerTitle>
+                          <DrawerTitle>Settlement Reduction Report</DrawerTitle>
                           <DrawerDescription>
-                            Detailed breakdown of the lien reduction calculation
+                            Detailed breakdown of the settlement reduction calculation
                           </DrawerDescription>
                         </DrawerHeader>
                         <div className="p-4 space-y-4">
@@ -252,13 +252,13 @@ const LienCalculator = () => {
                           </div>
                           
                           <div className="border-b pb-2">
-                            <h3 className="font-medium">Lien Reduction</h3>
+                            <h3 className="font-medium">Reduction Breakdown</h3>
                             <div className="grid grid-cols-2 gap-2 mt-2">
-                              <div>Original Liens:</div>
+                              <div>Original Liens/Expenses:</div>
                               <div className="text-right font-medium">${result.originalLiens.toLocaleString()}</div>
                               <div>Reduction Percentage:</div>
                               <div className="text-right font-medium">{form.getValues().reductionPercentage}%</div>
-                              <div>Reduced Liens:</div>
+                              <div>Reduced Liens/Expenses:</div>
                               <div className="text-right font-medium">${Math.round(result.reducedLiens).toLocaleString()}</div>
                               <div>Total Savings:</div>
                               <div className="text-right font-medium text-green-600">${Math.round(result.savings).toLocaleString()}</div>
@@ -291,7 +291,7 @@ const LienCalculator = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center h-[300px]">
                   <Calculator className="h-12 w-12 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground text-center">Enter settlement details and click Calculate to see potential lien reduction results</p>
+                  <p className="text-muted-foreground text-center">Enter settlement details and click Calculate to see potential reduction results</p>
                 </div>
               )}
             </CardContent>
@@ -302,4 +302,4 @@ const LienCalculator = () => {
   );
 };
 
-export default LienCalculator;
+export default SettlementCalculator;

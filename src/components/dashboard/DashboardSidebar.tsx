@@ -37,7 +37,7 @@ const menuItems = [
   { name: "Time Tracking", icon: Clock, path: "/time" },
   { name: "Tasks", icon: CheckSquare, path: "/tasks" },
   { name: "Billing", icon: DollarSign, path: "/billing" },
-  { name: "Lien Calculator", icon: Calculator, path: "/lien-calculator" },
+  { name: "Settlement Calculator", icon: Calculator, path: "/settlement-calculator" },
   { name: "Reports", icon: BarChart4, path: "/reports" },
   { name: "Settings", icon: Settings, path: "/settings" },
 ];
