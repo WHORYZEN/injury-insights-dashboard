@@ -25,7 +25,8 @@ import {
   Settings,
   BarChart4,
   LogOut,
-  Calculator
+  Calculator,
+  FileLock2
 } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -38,6 +39,7 @@ const menuItems = [
   { name: "Tasks", icon: CheckSquare, path: "/tasks" },
   { name: "Billing", icon: DollarSign, path: "/billing" },
   { name: "Settlement Calculator", icon: Calculator, path: "/settlement-calculator" },
+  { name: "LOP Tracking", icon: FileLock2, path: "/lop-tracking" },
   { name: "Reports", icon: BarChart4, path: "/reports" },
   { name: "Settings", icon: Settings, path: "/settings" },
 ];

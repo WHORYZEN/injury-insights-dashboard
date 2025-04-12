@@ -14,6 +14,7 @@ import Tasks from "./pages/Tasks";
 import Billing from "./pages/Billing";
 import Reports from "./pages/Reports";
 import SettlementCalculator from "./pages/SettlementCalculator";
+import LOPTracking from "./pages/LOPTracking";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App: React.FC = () => {
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/billing" element={<Billing />} />
           <Route path="/settlement-calculator" element={<SettlementCalculator />} />
+          <Route path="/lop-tracking" element={<LOPTracking />} />
           <Route path="/reports" element={<Reports />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
