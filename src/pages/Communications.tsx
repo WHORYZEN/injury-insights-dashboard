@@ -174,7 +174,7 @@ const Communications = () => {
                     <SelectValue placeholder="Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="all-types">All Types</SelectItem>
                     <SelectItem value="Email">Email</SelectItem>
                     <SelectItem value="Phone Call">Phone Call</SelectItem>
                     <SelectItem value="Meeting">Meeting</SelectItem>
@@ -190,7 +190,7 @@ const Communications = () => {
                     <SelectValue placeholder="Direction" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Directions</SelectItem>
+                    <SelectItem value="all-directions">All Directions</SelectItem>
                     <SelectItem value="Incoming">Incoming</SelectItem>
                     <SelectItem value="Outgoing">Outgoing</SelectItem>
                   </SelectContent>

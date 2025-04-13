@@ -120,7 +120,7 @@ const Contacts = () => {
                     <SelectValue placeholder="Filter by type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All types</SelectItem>
+                    <SelectItem value="all-types">All types</SelectItem>
                     {contactTypes.map(type => (
                       <SelectItem key={type} value={type}>{type}</SelectItem>
                     ))}

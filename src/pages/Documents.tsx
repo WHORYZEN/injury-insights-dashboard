@@ -171,7 +171,7 @@ const Documents = () => {
                     <SelectValue placeholder="Document Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="all-types">All Types</SelectItem>
                     <SelectItem value="Pleading">Pleading</SelectItem>
                     <SelectItem value="Medical Record">Medical Record</SelectItem>
                     <SelectItem value="Correspondence">Correspondence</SelectItem>
@@ -191,7 +191,7 @@ const Documents = () => {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all-statuses">All Statuses</SelectItem>
                     <SelectItem value="Draft">Draft</SelectItem>
                     <SelectItem value="Final">Final</SelectItem>
                     <SelectItem value="Pending Review">Pending Review</SelectItem>
