@@ -12,9 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import AISearchDialog from "./AISearchDialog";
+import { useAuth } from "@/contexts/AuthContext";
 
 const TopNav = () => {
   const [isAISearchOpen, setIsAISearchOpen] = useState(false);
+  const { logout } = useAuth();
 
   return (
     <div className="border-b py-2 px-6 flex justify-between items-center bg-white">
@@ -89,7 +91,7 @@ const TopNav = () => {
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

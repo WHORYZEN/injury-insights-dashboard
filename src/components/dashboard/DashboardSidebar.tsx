@@ -32,6 +32,7 @@ import {
   Folder
 } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useAuth } from '@/contexts/AuthContext';
 
 const menuItems = [
   { name: "Dashboard", icon: Home, path: "/" },
@@ -52,6 +53,7 @@ const menuItems = [
 
 const DashboardSidebar = () => {
   const location = useLocation();
+  const { logout } = useAuth();
   
   return (
     <TooltipProvider>
@@ -90,7 +92,10 @@ const DashboardSidebar = () => {
         </SidebarContent>
         
         <SidebarFooter className="border-t border-sidebar-border p-4">
-          <button className="flex items-center gap-2 text-sidebar-foreground w-full">
+          <button 
+            className="flex items-center gap-2 text-sidebar-foreground w-full"
+            onClick={logout}
+          >
             <LogOut className="h-5 w-5" />
             <span>Log Out</span>
           </button>
