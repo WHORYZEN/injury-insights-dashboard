@@ -37,9 +37,7 @@ const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
     config: ChartConfig
-    children: React.ComponentProps<
-      typeof RechartsPrimitive.ResponsiveContainer
-    >["children"]
+    children: React.ReactNode
   }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId()
@@ -356,22 +354,19 @@ function getPayloadConfigFromPayload(
 
 // Add the specific chart component implementations
 // BarChart component
-const BarChart = ({ 
-  data, 
-  index, 
-  categories, 
-  colors = ["#2563eb"], 
-  valueFormatter,
-  ...props 
-}: {
-  data: any[]
-  index: string
-  categories: string[]
-  colors?: string[]
-  valueFormatter?: (value: number) => string
-} & Omit<React.ComponentProps<typeof RechartsPrimitive.BarChart>, "data">) => {
+const BarChart = React.forwardRef<
+  HTMLDivElement,
+  Omit<React.ComponentProps<typeof ChartContainer>, "children" | "config"> & {
+    data: any[]
+    index: string
+    categories: string[]
+    colors?: string[]
+    valueFormatter?: (value: number) => string
+  }
+>(({ data, index, categories, colors = ["#2563eb"], valueFormatter, ...props }, ref) => {
   return (
     <ChartContainer
+      ref={ref}
       config={{}}
       className="w-full h-full"
       {...props}
@@ -421,25 +416,23 @@ const BarChart = ({
       </RechartsPrimitive.BarChart>
     </ChartContainer>
   )
-}
+})
+BarChart.displayName = "BarChart"
 
 // LineChart component
-const LineChart = ({ 
-  data, 
-  index, 
-  categories, 
-  colors = ["#2563eb"], 
-  valueFormatter,
-  ...props 
-}: {
-  data: any[]
-  index: string
-  categories: string[]
-  colors?: string[]
-  valueFormatter?: (value: number) => string
-} & Omit<React.ComponentProps<typeof RechartsPrimitive.LineChart>, "data">) => {
+const LineChart = React.forwardRef<
+  HTMLDivElement,
+  Omit<React.ComponentProps<typeof ChartContainer>, "children" | "config"> & {
+    data: any[]
+    index: string
+    categories: string[]
+    colors?: string[]
+    valueFormatter?: (value: number) => string
+  }
+>(({ data, index, categories, colors = ["#2563eb"], valueFormatter, ...props }, ref) => {
   return (
     <ChartContainer
+      ref={ref}
       config={{}}
       className="w-full h-full"
       {...props}
@@ -493,25 +486,23 @@ const LineChart = ({
       </RechartsPrimitive.LineChart>
     </ChartContainer>
   )
-}
+})
+LineChart.displayName = "LineChart"
 
 // PieChart component
-const PieChart = ({ 
-  data, 
-  index, 
-  categories, 
-  colors = ["#2563eb", "#8b5cf6", "#06b6d4", "#10b981", "#eab308"], 
-  valueFormatter,
-  ...props 
-}: {
-  data: any[]
-  index: string
-  categories: string[]
-  colors?: string[]
-  valueFormatter?: (value: number) => string
-} & Omit<React.ComponentProps<typeof RechartsPrimitive.PieChart>, "data">) => {
+const PieChart = React.forwardRef<
+  HTMLDivElement,
+  Omit<React.ComponentProps<typeof ChartContainer>, "children" | "config"> & {
+    data: any[]
+    index: string
+    categories: string[]
+    colors?: string[]
+    valueFormatter?: (value: number) => string
+  }
+>(({ data, index, categories, colors = ["#2563eb", "#8b5cf6", "#06b6d4", "#10b981", "#eab308"], valueFormatter, ...props }, ref) => {
   return (
     <ChartContainer
+      ref={ref}
       config={{}}
       className="w-full h-full"
       {...props}
@@ -554,7 +545,8 @@ const PieChart = ({
       </RechartsPrimitive.PieChart>
     </ChartContainer>
   )
-}
+})
+PieChart.displayName = "PieChart"
 
 export {
   ChartContainer,
