@@ -15,6 +15,9 @@ import Billing from "./pages/Billing";
 import Reports from "./pages/Reports";
 import SettlementCalculator from "./pages/SettlementCalculator";
 import LOPTracking from "./pages/LOPTracking";
+import Contacts from "./pages/Contacts";
+import Communications from "./pages/Communications";
+import Documents from "./pages/Documents";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -27,6 +30,9 @@ const App: React.FC = () => {
           <Route path="/" element={<Index />} />
           <Route path="/cases" element={<Cases />} />
           <Route path="/clients" element={<Clients />} />
+          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/communications" element={<Communications />} />
+          <Route path="/documents" element={<Documents />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/time" element={<TimeTracking />} />
           <Route path="/tasks" element={<Tasks />} />

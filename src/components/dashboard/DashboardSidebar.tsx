@@ -26,7 +26,10 @@ import {
   BarChart4,
   LogOut,
   Calculator,
-  FileLock2
+  FileLock2,
+  Contact,
+  MessageSquare,
+  Folder
 } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -34,6 +37,9 @@ const menuItems = [
   { name: "Dashboard", icon: Home, path: "/" },
   { name: "Clients", icon: Users, path: "/clients" },
   { name: "Cases", icon: FileText, path: "/cases" },
+  { name: "Contacts", icon: Contact, path: "/contacts" },
+  { name: "Communications", icon: MessageSquare, path: "/communications" },
+  { name: "Documents", icon: Folder, path: "/documents" },
   { name: "Calendar", icon: Calendar, path: "/calendar" },
   { name: "Time Tracking", icon: Clock, path: "/time" },
   { name: "Tasks", icon: CheckSquare, path: "/tasks" },
@@ -55,7 +61,7 @@ const DashboardSidebar = () => {
             <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold">
               PI
             </div>
-            <span className="font-bold text-lg text-sidebar-foreground">InjuryCase</span>
+            <span className="font-bold text-lg text-sidebar-foreground">PI-360°</span>
           </div>
           <SidebarTrigger className="absolute right-2 top-4 text-sidebar-foreground" />
         </SidebarHeader>
