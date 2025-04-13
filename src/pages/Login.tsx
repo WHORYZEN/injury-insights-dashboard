@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/components/AuthProvider";
 
 // Create a schema for form validation
 const formSchema = z.object({
@@ -23,6 +24,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Initialize react-hook-form
   const form = useForm<FormValues>({
@@ -35,13 +37,12 @@ const Login = () => {
 
   const onSubmit = (values: FormValues) => {
     // Check credentials
-    if (values.username === "PI360" && values.password === "visha123") {
+    if (values.username.toUpperCase() === "PI360" && values.password === "visha123") {
       toast({
         title: "Login Successful",
         description: "Welcome to PI-360° Dashboard",
       });
-      // Store authentication state in localStorage
-      localStorage.setItem("isAuthenticated", "true");
+      login();
       navigate("/");
     } else {
       toast({

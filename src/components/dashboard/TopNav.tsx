@@ -1,7 +1,5 @@
 
 // src/components/dashboard/TopNav.tsx
-// This file is read-only, but I'll provide the modified version that would add a logout button
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +28,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSidebar } from "@/components/ui/sidebar";
 
 const TopNav = () => {
-  const { openSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const { logout } = useAuth();
   const { toast } = useToast();
 
@@ -48,7 +46,7 @@ const TopNav = () => {
         variant="outline"
         size="icon"
         className="md:hidden"
-        onClick={openSidebar}
+        onClick={toggleSidebar}
       >
         <Menu className="h-5 w-5" />
         <span className="sr-only">Toggle sidebar</span>
