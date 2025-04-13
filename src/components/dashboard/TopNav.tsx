@@ -1,150 +1,102 @@
 
-// src/components/dashboard/TopNav.tsx
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/components/AuthProvider";
-import {
-  Bell,
-  Calendar,
-  CircleHelp,
-  Clock,
-  LogOut,
-  Menu,
-  Search,
-  Settings,
-  User,
-} from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Bell, LogOut, Search, Settings, User, Zap } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSidebar } from "@/components/ui/sidebar";
+import { Input } from "@/components/ui/input";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import AISearchDialog from "./AISearchDialog";
 
 const TopNav = () => {
-  const { toggleSidebar } = useSidebar();
-  const { logout } = useAuth();
-  const { toast } = useToast();
-
-  const handleLogout = () => {
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    });
-    logout();
-  };
+  const [isAISearchOpen, setIsAISearchOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full shrink-0 items-center gap-4 border-b bg-background px-4 sm:px-6">
-      <Button
-        variant="outline"
-        size="icon"
-        className="md:hidden"
-        onClick={toggleSidebar}
-      >
-        <Menu className="h-5 w-5" />
-        <span className="sr-only">Toggle sidebar</span>
-      </Button>
-      <div className="flex flex-1 items-center gap-4 md:gap-8">
-        <form className="flex-1 sm:flex-initial">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search cases, contacts..."
-              className="pl-8 sm:w-[300px] md:w-[360px] lg:w-[420px]"
-            />
-          </div>
-        </form>
-        <nav className="hidden gap-4 md:flex">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground"
-            asChild
-          >
-            <a href="/calendar">
-              <Calendar className="h-5 w-5" />
-              <span className="sr-only">Calendar</span>
-            </a>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground"
-            asChild
-          >
-            <a href="/time">
-              <Clock className="h-5 w-5" />
-              <span className="sr-only">Time</span>
-            </a>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground"
-            asChild
-          >
-            <a href="#">
-              <Bell className="h-5 w-5" />
-              <span className="sr-only">Notifications</span>
-            </a>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground"
-            asChild
-          >
-            <a href="#">
-              <CircleHelp className="h-5 w-5" />
-              <span className="sr-only">Help</span>
-            </a>
-          </Button>
-        </nav>
+    <div className="border-b py-2 px-6 flex justify-between items-center bg-white">
+      <div className="relative w-full max-w-sm flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input 
+            type="search" 
+            placeholder="Search cases, clients..." 
+            className="pl-9 w-full bg-muted/40"
+          />
+        </div>
+        <button
+          onClick={() => setIsAISearchOpen(true)}
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+        >
+          <Zap className="h-4 w-4" />
+          <span className="text-sm font-medium">AI</span>
+        </button>
+        <AISearchDialog 
+          open={isAISearchOpen} 
+          onOpenChange={setIsAISearchOpen} 
+        />
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full border border-primary/10"
-          >
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder.svg" alt="Avatar" />
-              <AvatarFallback>PI</AvatarFallback>
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <a href="#">
+      
+      <div className="flex items-center gap-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="relative p-2 rounded-full hover:bg-muted/50">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-80">
+            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <div className="max-h-96 overflow-auto">
+              <DropdownMenuItem className="flex flex-col items-start py-3">
+                <p className="font-medium">Jones vs Smith deposition scheduled</p>
+                <span className="text-xs text-muted-foreground">2 hours ago</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex flex-col items-start py-3">
+                <p className="font-medium">Client documentation uploaded</p>
+                <span className="text-xs text-muted-foreground">Yesterday at 4:30 PM</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex flex-col items-start py-3">
+                <p className="font-medium">Settlement offer received</p>
+                <span className="text-xs text-muted-foreground">Yesterday at 2:15 PM</span>
+              </DropdownMenuItem>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center gap-2">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="" />
+                <AvatarFallback className="bg-primary text-white">AL</AvatarFallback>
+              </Avatar>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              Profile
-            </a>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <a href="#">
+              <span>Profile</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </a>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </header>
+              <span>Settings</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
   );
 };
 
