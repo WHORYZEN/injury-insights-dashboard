@@ -3,8 +3,10 @@ import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "@/components/AuthProvider";
 import Index from "./pages/Index";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Cases from "./pages/Cases";
 import Clients from "./pages/Clients";
@@ -22,29 +24,46 @@ import Documents from "./pages/Documents";
 // Create a client
 const queryClient = new QueryClient();
 
+// Protected route component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  
+  return <>{children}</>;
+};
+
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/cases" element={<Cases />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/contacts" element={<Contacts />} />
-          <Route path="/communications" element={<Communications />} />
-          <Route path="/documents" element={<Documents />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/time" element={<TimeTracking />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/billing" element={<Billing />} />
-          <Route path="/settlement-calculator" element={<SettlementCalculator />} />
-          <Route path="/lop-tracking" element={<LOPTracking />} />
-          <Route path="/reports" element={<Reports />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Toaster />
-        <Sonner />
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            
+            {/* Protected routes */}
+            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+            <Route path="/cases" element={<ProtectedRoute><Cases /></ProtectedRoute>} />
+            <Route path="/clients" element={<ProtectedRoute><Clients /></ProtectedRoute>} />
+            <Route path="/contacts" element={<ProtectedRoute><Contacts /></ProtectedRoute>} />
+            <Route path="/communications" element={<ProtectedRoute><Communications /></ProtectedRoute>} />
+            <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
+            <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+            <Route path="/time" element={<ProtectedRoute><TimeTracking /></ProtectedRoute>} />
+            <Route path="/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
+            <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
+            <Route path="/settlement-calculator" element={<ProtectedRoute><SettlementCalculator /></ProtectedRoute>} />
+            <Route path="/lop-tracking" element={<ProtectedRoute><LOPTracking /></ProtectedRoute>} />
+            <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+            
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+          <Sonner />
+        </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );
