@@ -114,3 +114,118 @@ export function Chart({
 
   return <ResponsiveContainer width="100%" height={height}>{renderChart()}</ResponsiveContainer>;
 }
+
+// New components for individual chart types that match the import signatures used in the pages
+type LineChartProps = {
+  data: any[];
+  index: string;
+  categories: string[];
+  colors?: string[];
+  valueFormatter?: (value: number) => string;
+};
+
+export function LineChart({ 
+  data, 
+  index, 
+  categories,
+  colors = ["#8884d8"], 
+  valueFormatter = (value) => `${value}` 
+}: LineChartProps) {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <RechartsLineChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey={index} />
+        <YAxis tickFormatter={valueFormatter} />
+        <Tooltip formatter={valueFormatter} />
+        <Legend />
+        {categories.map((category, index) => (
+          <Line
+            key={category}
+            type="monotone"
+            dataKey={category}
+            stroke={colors[index % colors.length]}
+            activeDot={{ r: 8 }}
+          />
+        ))}
+      </RechartsLineChart>
+    </ResponsiveContainer>
+  );
+}
+
+type BarChartProps = {
+  data: any[];
+  index: string;
+  categories: string[];
+  colors?: string[];
+  valueFormatter?: (value: number) => string;
+};
+
+export function BarChart({ 
+  data, 
+  index, 
+  categories,
+  colors = ["#8884d8"], 
+  valueFormatter = (value) => `${value}` 
+}: BarChartProps) {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <RechartsBarChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey={index} />
+        <YAxis tickFormatter={valueFormatter} />
+        <Tooltip formatter={valueFormatter} />
+        <Legend />
+        {categories.map((category, idx) => (
+          <Bar 
+            key={category} 
+            dataKey={category} 
+            fill={colors[idx % colors.length]} 
+          />
+        ))}
+      </RechartsBarChart>
+    </ResponsiveContainer>
+  );
+}
+
+type PieChartProps = {
+  data: any[];
+  index: string;
+  categories: string[];
+  colors?: string[];
+  valueFormatter?: (value: number) => string;
+};
+
+export function PieChart({ 
+  data, 
+  index, 
+  categories, 
+  colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#a4de6c"],
+  valueFormatter = (value) => `${value}` 
+}: PieChartProps) {
+  const categoryKey = categories[0];
+  
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <RechartsPieChart>
+        <Pie
+          data={data}
+          cx="50%"
+          cy="50%"
+          labelLine={true}
+          outerRadius={80}
+          fill="#8884d8"
+          dataKey={categoryKey}
+          nameKey={index}
+          label={({ name, value }) => `${name}: ${valueFormatter(value)}`}
+        >
+          {data.map((entry, idx) => (
+            <Cell key={`cell-${idx}`} fill={colors[idx % colors.length]} />
+          ))}
+        </Pie>
+        <Tooltip formatter={valueFormatter} />
+        <Legend />
+      </RechartsPieChart>
+    </ResponsiveContainer>
+  );
+}
