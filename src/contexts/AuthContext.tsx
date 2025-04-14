@@ -1,7 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from "@/components/ui/use-toast";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -14,7 +13,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   // Check if user is already logged in on initial load
   useEffect(() => {
@@ -31,29 +29,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (username === 'PI360' && password === 'vishal123') {
       setIsAuthenticated(true);
       localStorage.setItem('auth', 'true');
-      toast({
-        title: "Login Successful",
-        description: "Welcome to -360° application",
-        variant: "default"
-      });
       return true;
     }
-    toast({
-      title: "Login Failed",
-      description: "Invalid username or password",
-      variant: "destructive"
-    });
     return false;
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('auth');
-    toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out",
-      variant: "default"
-    });
     navigate('/login');
   };
 
