@@ -106,7 +106,7 @@ const Login = () => {
           </Button>
           
           <div className="text-center text-sm text-gray-500">
-            <p>Demo credentials: PI360 / vishal123</p>
+            {/* <p>Demo credentials: PI360 / vishal123</p> */}
           </div>
         </form>
       </div>
