@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -13,17 +13,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Check if user is already logged in on initial load
   useEffect(() => {
     const savedAuth = localStorage.getItem('auth');
     if (savedAuth === 'true') {
       setIsAuthenticated(true);
-    } else {
-      // Redirect to login if not authenticated
+    } else if (location.pathname !== '/login' && location.pathname !== '*') {
+      // Redirect to login if not authenticated and not already on login page
       navigate('/login');
     }
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   const login = (username: string, password: string): boolean => {
     if (username === 'PI360' && password === 'vishal123') {
