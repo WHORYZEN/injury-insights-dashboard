@@ -13,14 +13,26 @@ import {
 import { useState } from "react";
 import AISearchDialog from "./AISearchDialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const TopNav = () => {
   const [isAISearchOpen, setIsAISearchOpen] = useState(false);
   const { logout } = useAuth();
+  const isMobile = useIsMobile();
 
   return (
-    <div className="border-b py-2 px-6 flex justify-between items-center bg-white">
-      <div className="relative w-full max-w-sm flex items-center gap-2">
+    <div className="border-b py-2 px-4 md:px-6 flex justify-between items-center bg-white">
+      {/* Logo for mobile */}
+      {isMobile && (
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold">
+            PI
+          </div>
+          <span className="font-bold text-lg">-360°</span>
+        </div>
+      )}
+      
+      <div className="relative md:w-full max-w-sm flex items-center gap-2">
         <div className="relative flex-1">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input 
@@ -42,7 +54,7 @@ const TopNav = () => {
         />
       </div>
       
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="relative p-2 rounded-full hover:bg-muted/50">
