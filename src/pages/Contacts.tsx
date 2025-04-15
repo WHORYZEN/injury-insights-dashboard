@@ -1,17 +1,17 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { contacts, Contact, ContactType } from "@/data/contacts";
+import { contacts as initialContacts, Contact, ContactType } from "@/data/contacts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PlusCircle, Search, Mail, Phone, UserPlus, Filter, X } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { AddContactDialog } from "@/components/contacts/AddContactDialog";
+import { Search, Mail, Phone, Filter, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
 
@@ -21,7 +21,23 @@ const Contacts = () => {
   const [filterType, setFilterType] = useState<string>("");
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
-  
+  const [contacts, setContacts] = useState<Contact[]>(initialContacts);
+
+  const handleAddContact = (data: Omit<Contact, "id" | "createdAt" | "relatedTo">) => {
+    const newContact: Contact = {
+      id: (contacts.length + 1).toString(),
+      createdAt: new Date().toISOString(),
+      relatedTo: [],
+      ...data,
+    };
+
+    setContacts(prevContacts => [newContact, ...prevContacts]);
+    toast({
+      title: "Contact Added",
+      description: `${newContact.name} has been added to your contacts.`,
+    });
+  };
+
   const filteredContacts = contacts.filter(contact => {
     const matchesSearch = contact.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          contact.email.toLowerCase().includes(searchTerm.toLowerCase());
@@ -57,14 +73,6 @@ const Contacts = () => {
     setContactDialogOpen(true);
   };
 
-  const handleAddContact = () => {
-    toast({
-      title: "Add Contact",
-      description: "This would open a form to add a new contact.",
-      duration: 3000,
-    });
-  };
-
   const handleEditContact = () => {
     toast({
       title: "Edit Contact",
@@ -93,10 +101,7 @@ const Contacts = () => {
               Manage your contacts and view their information
             </p>
           </div>
-          <Button onClick={handleAddContact}>
-            <UserPlus className="mr-2 h-4 w-4" />
-            Add Contact
-          </Button>
+          <AddContactDialog onAddContact={handleAddContact} />
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -235,7 +240,6 @@ const Contacts = () => {
         </Card>
       </div>
 
-      {/* Contact Details Dialog */}
       <Dialog open={contactDialogOpen} onOpenChange={setContactDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
