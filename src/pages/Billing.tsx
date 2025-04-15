@@ -1,4 +1,3 @@
-
 import React from 'react';
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { 
@@ -11,9 +10,9 @@ import {
 } from "@/components/ui/table";
 import { 
   Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle 
+  CardContent,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
 import { 
   DollarSign, 
@@ -21,7 +20,8 @@ import {
   ArrowDownRight, 
   FileText,
   Calendar,
-  Download
+  Download,
+  Clock
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -76,6 +76,40 @@ const invoices = [
   }
 ];
 
+// Add mock billable hours data
+const billableHours = [
+  {
+    id: "BH-001",
+    caseNumber: "PI-2025-042",
+    client: "Sarah Johnson",
+    hours: 8.5,
+    rate: 250,
+    total: 2125,
+    periodStart: "Apr 1, 2025",
+    periodEnd: "Apr 10, 2025"
+  },
+  {
+    id: "BH-002",
+    caseNumber: "PI-2025-039",
+    client: "Michael Chen",
+    hours: 12.0,
+    rate: 250,
+    total: 3000,
+    periodStart: "Apr 1, 2025",
+    periodEnd: "Apr 10, 2025"
+  },
+  {
+    id: "BH-003",
+    caseNumber: "PI-2025-036",
+    client: "Robert Williams",
+    hours: 6.5,
+    rate: 250,
+    total: 1625,
+    periodStart: "Apr 1, 2025",
+    periodEnd: "Apr 10, 2025"
+  }
+];
+
 const Billing = () => {
   return (
     <DashboardLayout>
@@ -117,6 +151,61 @@ const Billing = () => {
           />
         </div>
 
+        {/* Billable Hours Section */}
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-medium">Billable Hours</h2>
+            <Button>Add Time Entry</Button>
+          </div>
+          
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Case</TableHead>
+                    <TableHead>Client</TableHead>
+                    <TableHead>Period</TableHead>
+                    <TableHead>Hours</TableHead>
+                    <TableHead>Rate</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {billableHours.map((entry) => (
+                    <TableRow key={entry.id}>
+                      <TableCell>{entry.caseNumber}</TableCell>
+                      <TableCell>{entry.client}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                          {entry.periodStart} - {entry.periodEnd}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                          {entry.hours}h
+                        </div>
+                      </TableCell>
+                      <TableCell>${entry.rate}/h</TableCell>
+                      <TableCell>${entry.total}</TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">
+                          <Download className="h-4 w-4 mr-1" />
+                          Export
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Recent Invoices Section */}
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-medium">Recent Invoices</h2>
