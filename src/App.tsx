@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Cases from "./pages/Cases";
 import Clients from "./pages/Clients";
+import ClientProfile from "./pages/ClientProfile";
 import Calendar from "./pages/Calendar";
 import TimeTracking from "./pages/TimeTracking";
 import Tasks from "./pages/Tasks";
@@ -46,6 +47,7 @@ const App: React.FC = () => {
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
             <Route path="/cases" element={<ProtectedRoute><Cases /></ProtectedRoute>} />
             <Route path="/clients" element={<ProtectedRoute><Clients /></ProtectedRoute>} />
+            <Route path="/clients/:id" element={<ProtectedRoute><ClientProfile /></ProtectedRoute>} />
             <Route path="/contacts" element={<ProtectedRoute><Contacts /></ProtectedRoute>} />
             <Route path="/communications" element={<ProtectedRoute><Communications /></ProtectedRoute>} />
             <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />

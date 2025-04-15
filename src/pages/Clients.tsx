@@ -25,6 +25,10 @@ const Clients = () => {
     setClients(prevClients => [newClient, ...prevClients]);
   };
 
+  const handleViewClient = (clientId: string) => {
+    navigate(`/clients/${clientId}`);
+  };
+
   const handleViewCases = (clientId: string) => {
     navigate(`/cases?clientId=${clientId}`);
   };
@@ -76,7 +80,7 @@ const Clients = () => {
           
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {clients.map((client) => (
-              <Card key={client.id}>
+              <Card key={client.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleViewClient(client.id)}>
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
                     <div className="flex gap-3">
@@ -121,11 +125,24 @@ const Clients = () => {
                       size="sm" 
                       variant="outline" 
                       className="flex-1"
-                      onClick={() => handleViewCases(client.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewCases(client.id);
+                      }}
                     >
                       View Cases
                     </Button>
-                    <Button size="sm" variant="outline" className="flex-1">View Details</Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewClient(client.id);
+                      }}
+                    >
+                      View Details
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
