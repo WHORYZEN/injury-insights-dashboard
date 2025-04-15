@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { recentClients, clientStats } from "@/data/clients";
+import { recentClients, clientStats, Client } from "@/data/clients";
 import StatCard from "@/components/dashboard/StatCard";
 import { Users, UserPlus, UserCheck, UserMinus } from "lucide-react";
 import { 
@@ -12,10 +12,23 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Phone, Mail } from "lucide-react";
+import AddClientDialog from "@/components/dashboard/AddClientDialog";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, FileText } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Clients = () => {
+  const [clients, setClients] = useState<Client[]>(recentClients);
+  const navigate = useNavigate();
+
+  const handleAddClient = (newClient: Client) => {
+    setClients(prevClients => [newClient, ...prevClients]);
+  };
+
+  const handleViewCases = (clientId: string) => {
+    navigate(`/cases?clientId=${clientId}`);
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -58,11 +71,11 @@ const Clients = () => {
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-medium">Client List</h2>
-            <Button>Add New Client</Button>
+            <AddClientDialog onClientAdded={handleAddClient} />
           </div>
           
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {recentClients.map((client) => (
+            {clients.map((client) => (
               <Card key={client.id}>
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
@@ -104,8 +117,15 @@ const Clients = () => {
                     </div>
                   )}
                   <div className="flex gap-2 mt-4">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => handleViewCases(client.id)}
+                    >
+                      View Cases
+                    </Button>
                     <Button size="sm" variant="outline" className="flex-1">View Details</Button>
-                    <Button size="sm" variant="outline" className="flex-1">View Cases</Button>
                   </div>
                 </CardContent>
               </Card>
