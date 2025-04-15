@@ -56,6 +56,7 @@ const App: React.FC = () => {
             <Route path="/settlement-calculator" element={<ProtectedRoute><SettlementCalculator /></ProtectedRoute>} />
             <Route path="/lop-tracking" element={<ProtectedRoute><LOPTracking /></ProtectedRoute>} />
             <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Navigate to="/" replace /></ProtectedRoute>} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

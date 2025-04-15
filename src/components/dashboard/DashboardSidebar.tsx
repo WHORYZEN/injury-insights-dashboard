@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -33,6 +32,7 @@ import {
 } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from "@/hooks/use-toast";
 
 const menuItems = [
   { name: "Dashboard", icon: Home, path: "/" },
@@ -53,7 +53,26 @@ const menuItems = [
 
 const DashboardSidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { logout } = useAuth();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to log out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
   
   return (
     <TooltipProvider>
@@ -93,8 +112,8 @@ const DashboardSidebar = () => {
         
         <SidebarFooter className="border-t border-sidebar-border p-4">
           <button 
-            className="flex items-center gap-2 text-sidebar-foreground w-full"
-            onClick={logout}
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-sidebar-foreground w-full hover:text-primary transition-colors"
           >
             <LogOut className="h-5 w-5" />
             <span>Log Out</span>
