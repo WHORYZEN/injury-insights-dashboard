@@ -26,6 +26,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import StatCard from "@/components/dashboard/StatCard";
+import ImportBillingDialog from "@/components/billing/ImportBillingDialog";
 
 // Mock billing data
 const invoices = [
@@ -155,7 +156,10 @@ const Billing = () => {
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-medium">Billable Hours</h2>
-            <Button>Add Time Entry</Button>
+            <div className="flex gap-2">
+              <ImportBillingDialog />
+              <Button>Add Time Entry</Button>
+            </div>
           </div>
           
           <Card>
